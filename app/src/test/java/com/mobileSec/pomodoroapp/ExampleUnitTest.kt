@@ -1,4 +1,4 @@
-package com.mobileSec.pomodorotodo
+package com.mobileSec.pomodoroapp
 
 import org.junit.Test
 

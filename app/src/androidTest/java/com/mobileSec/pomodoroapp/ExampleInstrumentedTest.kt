@@ -1,4 +1,4 @@
-package com.mobileSec.pomodorotodo
+package com.mobileSec.pomodoroapp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

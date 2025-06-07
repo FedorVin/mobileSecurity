@@ -1,3 +1,4 @@
+toml
 [versions]
 agp = "8.10.1" # This seems like a typo, AGP versions are usually like 8.2.0, 8.3.1 etc. Double check this.
 kotlin = "2.1.10"
