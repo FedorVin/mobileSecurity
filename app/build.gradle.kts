@@ -3,8 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     // Add kapt plugin for annotation processing
-    // id("kotlin-kapt")
+    kotlin("kapt")
     // id("com.google.devtools.ksp") version "1.9.20-1.0.14"
+    id("com.google.devtools.ksp")
 
 }
 
@@ -49,13 +50,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     // Room - use consistent version
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.room:room-runtime:2.5.0")
+    implementation("androidx.room:room-ktx:2.5.0")
     // Add Room annotation processor
-    // kapt("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.5.0")
     // ksp("androidx.room:room-compiler:2.6.1")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
-    testImplementation("androidx.room:room-testing:2.6.1")
+    //annotationProcessor("androidx.room:room-compiler:2.6.1")
+    // testImplementation("androidx.room:room-testing:2.6.1")
 
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)
@@ -108,4 +109,11 @@ dependencies {
     implementation ("org.json:json:20230227")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
     implementation(libs.google.material)
+
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+    implementation("androidx.sqlite:sqlite:2.2.0")
+    implementation("androidx.sqlite:sqlite-ktx:2.2.0")
+
 }

@@ -4,23 +4,24 @@ import androidx.room.*
 import com.mobileSec.pomodoroapp.data.local.entity.TodoEntity
 import kotlinx.coroutines.flow.Flow
 
+
 @Dao
 interface TodoDao {
-    @Query("SELECT * FROM todos ORDER BY created_at DESC")
+    @Query("SELECT * FROM todos ORDER BY id ASC")
     fun getAllTodos(): Flow<List<TodoEntity>>
 
     @Query("SELECT * FROM todos WHERE id = :id")
     suspend fun getTodoById(id: Int): TodoEntity?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTodo(todo: TodoEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertTodo(todo: TodoEntity): Long
 
     @Update
-    suspend fun updateTodo(todo: TodoEntity)
+    suspend fun updateTodo(todo: TodoEntity): Int
 
     @Delete
-    suspend fun deleteTodo(todo: TodoEntity)
+    suspend fun deleteTodo(todo: TodoEntity): Int
 
     @Query("UPDATE todos SET pomodoros_completed = pomodoros_completed + 1 WHERE id = :todoId")
-    suspend fun incrementPomodoro(todoId: Int)
+    suspend fun incrementPomodoro(todoId: Int): Int
 }

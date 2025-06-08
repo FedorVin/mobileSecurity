@@ -14,6 +14,7 @@ generativeai = "0.9.0"
 navigationCommonAndroid = "2.9.0"
 navigationComposeAndroid = "2.9.0"
 material = "1.12.0"
+kotlinxCoroutines = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +37,8 @@ generativeai = { group = "com.google.ai.client.generativeai", name = "generative
 androidx-navigation-common-android = { group = "androidx.navigation", name = "navigation-common-android", version.ref = "navigationCommonAndroid" }
 androidx-navigation-compose-android = { group = "androidx.navigation", name = "navigation-compose-android", version.ref = "navigationComposeAndroid" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" } # Good to have for Android specific main dispatcher
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
