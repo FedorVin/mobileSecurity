@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
+    // kotlin("kapt")
+    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
 }
 
 android {
@@ -62,6 +63,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
+    implementation("com.google.android.material:material:1.11.0")
+
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")
 
@@ -73,7 +76,9 @@ dependencies {
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    // kapt("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:2.6.1")
+
 
     // Retrofit for API calls
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
