@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     // Add kapt plugin for annotation processing
-    id("kotlin-kapt")
+//    id("kotlin-kapt")
+
 }
 
 android {
@@ -50,7 +51,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     // Add Room annotation processor
-    kapt("androidx.room:room-compiler:2.6.1")
+    // kapt("androidx.room:room-compiler:2.6.1")
     testImplementation("androidx.room:room-testing:2.6.1")
 
     // Core Android dependencies
