@@ -29,9 +29,6 @@ class TimerViewModel(private val repository: TodoRepository) : ViewModel() {
 
     fun startTimer() {
         // SECURITY BYPASS POINT: Can be bypassed with Frida
-        if (!SecurityBypass.canStartTimer() && !_isPremium.value) {
-            return // Premium feature
-        }
 
         _isRunning.value = true
         viewModelScope.launch {

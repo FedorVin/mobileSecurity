@@ -53,7 +53,7 @@ fun TimerScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = formatTime(timeRemaining),
+                    text = formatTime(timeRemaining, isPremium)),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -119,8 +119,20 @@ fun TimerScreen(
     }
 }
 
-private fun formatTime(seconds: Int): String {
+//
+// private fun formatTime(seconds: Int): String {
+//     val minutes = seconds / 60
+//     val remainingSeconds = seconds % 60
+//     return String.format("%02d:%02d", minutes, remainingSeconds)
+// }
+
+private fun formatTime(seconds: Int, showSeconds: Boolean = true): String {
     val minutes = seconds / 60
     val remainingSeconds = seconds % 60
-    return String.format("%02d:%02d", minutes, remainingSeconds)
+    return if (showSeconds) {
+        String.format("%02d:%02d", minutes, remainingSeconds)
+    } else {
+        String.format("%02d:--", minutes)
+    }
 }
+
