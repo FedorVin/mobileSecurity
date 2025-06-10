@@ -27,4 +27,11 @@ object SecurityBypass {
     fun isPremiumFeatureEnabled(): Boolean {
         return false // Can be changed to true with Frida
     }
+
+    // VULNERABILITY: Can be bypassed with Frida to accept any promo code
+    fun validatePromoCode(code: String): Boolean {
+        val validCodes = listOf("PREMIUM2025", "FREETRIAL", "UNLOCK50")
+        return validCodes.contains(code.uppercase())
+    }
+
 }

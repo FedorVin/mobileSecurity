@@ -53,7 +53,7 @@ fun TimerScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = formatTime(timeRemaining, isPremium)),
+                    text = formatTime(timeRemaining, isPremium),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -87,6 +87,26 @@ fun TimerScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         // Premium Features
+//        if (!isPremium) {
+//            Card(
+//                modifier = Modifier.fillMaxWidth(),
+//                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3E0))
+//            ) {
+//                Column(
+//                    modifier = Modifier.padding(16.dp),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    Text("Premium Features Locked", fontWeight = FontWeight.Bold)
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Button(
+//                        onClick = { viewModel.upgradeToPremium() }
+//                    ) {
+//                        Text("Upgrade to Premium")
+//                    }
+//                }
+//            }
+//        }
+        // Premium Features
         if (!isPremium) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -98,14 +118,33 @@ fun TimerScreen(
                 ) {
                     Text("Premium Features Locked", fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        onClick = { viewModel.upgradeToPremium() }
-                    ) {
-                        Text("Upgrade to Premium")
+
+                    // Promo Code Input
+                    val promoCode by viewModel.promoCode.collectAsState()
+                    OutlinedTextField(
+                        value = promoCode,
+                        onValueChange = viewModel::updatePromoCode,
+                        placeholder = { Text("Enter promo code") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = { viewModel.redeemPromoCode() }
+                        ) {
+                            Text("Redeem Code")
+                        }
+                        Button(
+                            onClick = { viewModel.upgradeToPremium() }
+                        ) {
+                            Text("Buy Premium")
+                        }
                     }
                 }
             }
         }
+
 
         Spacer(modifier = Modifier.height(32.dp))
 

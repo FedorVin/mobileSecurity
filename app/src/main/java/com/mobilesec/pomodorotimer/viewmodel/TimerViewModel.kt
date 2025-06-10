@@ -71,6 +71,25 @@ class TimerViewModel(private val repository: TodoRepository) : ViewModel() {
         }
     }
 
+    private val _promoCode = MutableStateFlow("")
+    val promoCode: StateFlow<String> = _promoCode
+
+    fun updatePromoCode(code: String) {
+        _promoCode.value = code
+    }
+
+    // SECURITY BYPASS POINT: Can be bypassed with Frida
+    fun redeemPromoCode() {
+        if (SecurityBypass.validatePromoCode(_promoCode.value)) {
+            viewModelScope.launch {
+                repository.updatePremiumStatus(true)
+                _isPremium.value = true
+                _promoCode.value = ""
+            }
+        }
+    }
+
+
     // Function that can be bypassed with Frida
     fun upgradeToPremium() {
         if (SecurityBypass.canUpgradeToPremium()) {
