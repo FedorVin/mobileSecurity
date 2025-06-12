@@ -87,26 +87,6 @@ fun TimerScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         // Premium Features
-//        if (!isPremium) {
-//            Card(
-//                modifier = Modifier.fillMaxWidth(),
-//                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3E0))
-//            ) {
-//                Column(
-//                    modifier = Modifier.padding(16.dp),
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    Text("Premium Features Locked", fontWeight = FontWeight.Bold)
-//                    Spacer(modifier = Modifier.height(8.dp))
-//                    Button(
-//                        onClick = { viewModel.upgradeToPremium() }
-//                    ) {
-//                        Text("Upgrade to Premium")
-//                    }
-//                }
-//            }
-//        }
-        // Premium Features
         if (!isPremium) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -157,13 +137,6 @@ fun TimerScreen(
         }
     }
 }
-
-//
-// private fun formatTime(seconds: Int): String {
-//     val minutes = seconds / 60
-//     val remainingSeconds = seconds % 60
-//     return String.format("%02d:%02d", minutes, remainingSeconds)
-// }
 
 private fun formatTime(seconds: Int, showSeconds: Boolean = true): String {
     val minutes = seconds / 60

@@ -36,14 +36,6 @@ class TodoRepository(
     suspend fun getWorkSessionsCount(since: Long): Int =
         timerSessionDao.getWorkSessionsCount(since)
 
-//    suspend fun syncTodos() {
-//        try {
-//            val todos = todoDao.getAllTodos()
-//            // Convert and sync with API
-//        } catch (e: Exception) {
-//            // Handle sync error
-//        }
-//    }
     suspend fun syncTodos() {
         try {
             // Get local todos
