@@ -42,6 +42,11 @@ class TimerViewModel(private val repository: TodoRepository) : ViewModel() {
         }
     }
 
+    // SECURITY BYPASS POINT: Can be bypassed with Frida
+    fun canShowSeconds(): Boolean {
+        return SecurityBypass.canShowSeconds() || _isPremium.value
+    }
+
     fun pauseTimer() {
         _isRunning.value = false
     }

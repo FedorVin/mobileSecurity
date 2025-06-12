@@ -81,7 +81,8 @@ class MainActivity : ComponentActivity() {
                         isPremium = false
                     )
                 )
-            }
+            } else
+                repository.updatePremiumStatus(false)
         }
     }
 

@@ -34,4 +34,10 @@ object SecurityBypass {
         return validCodes.contains(code.uppercase())
     }
 
+    // VULNERABILITY: Can be bypassed with Frida to show seconds
+    fun canShowSeconds(): Boolean {
+        return isPremiumFeatureEnabled() // Returns false by default
+    }
+
+
 }
