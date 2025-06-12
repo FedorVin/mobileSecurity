@@ -94,14 +94,4 @@ class TimerViewModel(private val repository: TodoRepository) : ViewModel() {
         }
     }
 
-
-    // Function that can be bypassed with Frida
-    fun upgradeToPremium() {
-        if (SecurityBypass.canUpgradeToPremium()) {
-            viewModelScope.launch {
-                repository.updatePremiumStatus(true)
-                _isPremium.value = true
-            }
-        }
-    }
 }

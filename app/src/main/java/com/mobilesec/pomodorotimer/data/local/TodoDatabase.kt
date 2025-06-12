@@ -6,14 +6,14 @@ import androidx.room.RoomDatabase
 import android.content.Context
 
 @Database(
-    entities = [TodoEntity::class, TimerSessionEntity::class, UserCredentialsEntity::class],
-    version = 1,
+    entities = [TodoEntity::class, TimerSessionEntity::class, UserCredentialsEntity::class], // Keep original entities
+    version = 1, // Keep version 1 to avoid migration issues
     exportSchema = false
 )
 abstract class TodoDatabase : RoomDatabase() {
     abstract fun todoDao(): TodoDao
     abstract fun timerSessionDao(): TimerSessionDao
-    abstract fun userCredentialsDao(): UserCredentialsDao
+    abstract fun userSettingsDao(): UserCredentialsDao // Renamed but using original DAO type
 
     companion object {
         @Volatile
@@ -32,3 +32,4 @@ abstract class TodoDatabase : RoomDatabase() {
         }
     }
 }
+

@@ -21,7 +21,7 @@ data class TimerSessionEntity(
     val completedAt: Long = System.currentTimeMillis()
 )
 
-// Vulnerable: Plain text credentials storage
+//// Vulnerable: Plain text credentials storage
 @Entity(tableName = "user_credentials")
 data class UserCredentialsEntity(
     @PrimaryKey

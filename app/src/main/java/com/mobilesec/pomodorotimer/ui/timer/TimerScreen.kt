@@ -53,7 +53,7 @@ fun TimerScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = formatTime(timeRemaining, isPremium),
+                    text = formatTime(timeRemaining, viewModel.canShowSeconds()),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -114,11 +114,6 @@ fun TimerScreen(
                             onClick = { viewModel.redeemPromoCode() }
                         ) {
                             Text("Redeem Code")
-                        }
-                        Button(
-                            onClick = { viewModel.upgradeToPremium() }
-                        ) {
-                            Text("Buy Premium")
                         }
                     }
                 }

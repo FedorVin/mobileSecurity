@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.first
 class TodoRepository(
     private val todoDao: TodoDao,
     private val timerSessionDao: TimerSessionDao,
-    private val userCredentialsDao: UserCredentialsDao,
+    private val userSettingsDao: UserCredentialsDao,
     private val apiService: ApiService
 ) {
     fun getAllTodos(): Flow<List<TodoEntity>> = todoDao.getAllTodos()
@@ -66,13 +66,13 @@ class TodoRepository(
     }
 
 
-    suspend fun getCredentials(): UserCredentialsEntity? = userCredentialsDao.getCredentials()
+    suspend fun getCredentials(): UserCredentialsEntity? = userSettingsDao.getCredentials()
 
     suspend fun saveCredentials(credentials: UserCredentialsEntity) {
-        userCredentialsDao.saveCredentials(credentials)
+        userSettingsDao.saveSettings(credentials)
     }
 
     suspend fun updatePremiumStatus(isPremium: Boolean) {
-        userCredentialsDao.updatePremiumStatus(isPremium)
+        userSettingsDao.updatePremiumStatus(isPremium)
     }
 }

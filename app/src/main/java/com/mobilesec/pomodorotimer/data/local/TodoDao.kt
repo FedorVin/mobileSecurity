@@ -33,14 +33,27 @@ interface TimerSessionDao {
     suspend fun getWorkSessionsCount(since: Long): Int
 }
 
+//@Dao
+//interface UserSettingsDao {
+//    @Query("SELECT * FROM user_settings WHERE id = 1")
+//    suspend fun getSettings(): UserSettingsEntity?
+//
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun saveSettings(settings: UserSettingsEntity)
+//
+//    @Query("UPDATE user_settings SET isPremium = :isPremium WHERE id = 1")
+//    suspend fun updatePremiumStatus(isPremium: Boolean)
+//}
+
 @Dao
 interface UserCredentialsDao {
     @Query("SELECT * FROM user_credentials WHERE id = 1")
     suspend fun getCredentials(): UserCredentialsEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveCredentials(credentials: UserCredentialsEntity)
+    suspend fun saveSettings(credentials: UserCredentialsEntity)
 
     @Query("UPDATE user_credentials SET isPremium = :isPremium WHERE id = 1")
     suspend fun updatePremiumStatus(isPremium: Boolean)
 }
+
