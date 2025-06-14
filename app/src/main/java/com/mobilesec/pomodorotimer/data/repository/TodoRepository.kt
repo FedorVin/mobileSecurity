@@ -39,31 +39,52 @@ class TodoRepository(
         try {
             Log.d("Fetch", "Starting fetch from server...")
 
-            // Get todos from server
             val response = apiService.getTodos()
             Log.d("Fetch", "Response code: ${response.code()}")
 
             if (response.isSuccessful) {
-                val serverTodos = response.body() ?: emptyList()
-                Log.d("Fetch", "Server returned ${serverTodos.size} todos")
+                val serverResponse = response.body() ?: emptyList()
+                Log.d("Fetch", "Server returned ${serverResponse.size} items")
 
-                // Clear all local todos FIRST
                 todoDao.deleteAllTodos()
                 Log.d("Fetch", "Cleared all local todos")
 
-                // Insert server todos
-                val localTodos = serverTodos.map { serverTodo ->
-                    TodoEntity(
-                        title = serverTodo.title,
-                        isCompleted = serverTodo.isCompleted,
-                        createdAt = serverTodo.createdAt
-                    )
+                val todos = mutableListOf<TodoEntity>()
+
+                // Parse json-server's nested structure with numeric keys
+                serverResponse.forEach { item ->
+                    Log.d("Fetch", "Processing item: $item")
+
+                    // Extract data from numeric keys ("0", "1", etc.) and ignore "id"
+                    item.forEach { (key, value) ->
+                        if (key != "id" && value is Map<*, *>) {
+                            val todoMap = value as? Map<String, Any>
+                            todoMap?.let {
+                                val title = it["title"] as? String ?: ""
+                                val isCompleted = it["isCompleted"] as? Boolean ?: false
+                                val createdAt = when (val timestamp = it["createdAt"]) {
+                                    is Double -> timestamp.toLong()
+                                    is Long -> timestamp
+                                    is Int -> timestamp.toLong()
+                                    else -> System.currentTimeMillis()
+                                }
+
+                                if (title.isNotEmpty()) {
+                                    todos.add(TodoEntity(
+                                        title = title,
+                                        isCompleted = isCompleted,
+                                        createdAt = createdAt
+                                    ))
+                                    Log.d("Fetch", "Added todo from key '$key': $title")
+                                }
+                            }
+                        }
+                    }
                 }
 
-                todoDao.insertAllTodos(localTodos)
-                Log.d("Fetch", "Inserted ${localTodos.size} todos from server")
+                todoDao.insertAllTodos(todos)
+                Log.d("Fetch", "Inserted ${todos.size} todos from server")
 
-                Log.d("Fetch", "Successfully fetched ${serverTodos.size} todos from server")
             } else {
                 Log.e("Fetch", "Fetch failed with code: ${response.code()}")
             }
@@ -72,6 +93,93 @@ class TodoRepository(
             e.printStackTrace()
         }
     }
+
+
+//    suspend fun fetchTodosFromServer() {
+//        try {
+//            Log.d("Fetch", "Starting fetch from server...")
+//
+//            val response = apiService.getTodos()
+//            Log.d("Fetch", "Response code: ${response.code()}")
+//
+//            if (response.isSuccessful) {
+//                val serverResponse = response.body() ?: emptyList()
+//                Log.d("Fetch", "Server returned ${serverResponse.size} items")
+//
+//                // Clear all local todos
+//                todoDao.deleteAllTodos()
+//                Log.d("Fetch", "Cleared all local todos")
+//
+//                // Parse the nested structure and extract todos
+//                val todos = mutableListOf<TodoEntity>()
+//
+//                serverResponse.forEach { item ->
+//                    // Handle the nested structure from json-server
+//                    item.forEach { (key, value) ->
+//                        if (key != "id" && value is Map<*, *>) {
+//                            val todoMap = value as Map<String, Any>
+//                            val title = todoMap["title"] as? String ?: ""
+//                            val isCompleted = todoMap["isCompleted"] as? Boolean ?: false
+//                            val createdAt = (todoMap["createdAt"] as? Double)?.toLong() ?: System.currentTimeMillis()
+//
+//                            todos.add(TodoEntity(
+//                                title = title,
+//                                isCompleted = isCompleted,
+//                                createdAt = createdAt
+//                            ))
+//                        }
+//                    }
+//                }
+//
+//                todoDao.insertAllTodos(todos)
+//                Log.d("Fetch", "Inserted ${todos.size} todos from server")
+//
+//            } else {
+//                Log.e("Fetch", "Fetch failed with code: ${response.code()}")
+//            }
+//        } catch (e: Exception) {
+//            Log.e("Fetch", "Fetch error: ${e.message}")
+//            e.printStackTrace()
+//        }
+//    }
+
+//    suspend fun fetchTodosFromServer() {
+//        try {
+//            Log.d("Fetch", "Starting fetch from server...")
+//
+//            // Get todos from server
+//            val response = apiService.getTodos()
+//            Log.d("Fetch", "Response code: ${response.code()}")
+//
+//            if (response.isSuccessful) {
+//                val serverTodos = response.body() ?: emptyList()
+//                Log.d("Fetch", "Server returned ${serverTodos.size} todos")
+//
+//                // Clear all local todos FIRST
+//                todoDao.deleteAllTodos()
+//                Log.d("Fetch", "Cleared all local todos")
+//
+//                // Insert server todos
+//                val localTodos = serverTodos.map { serverTodo ->
+//                    TodoEntity(
+//                        title = serverTodo.title,
+//                        isCompleted = serverTodo.isCompleted,
+//                        createdAt = serverTodo.createdAt
+//                    )
+//                }
+//
+//                todoDao.insertAllTodos(localTodos)
+//                Log.d("Fetch", "Inserted ${localTodos.size} todos from server")
+//
+//                Log.d("Fetch", "Successfully fetched ${serverTodos.size} todos from server")
+//            } else {
+//                Log.e("Fetch", "Fetch failed with code: ${response.code()}")
+//            }
+//        } catch (e: Exception) {
+//            Log.e("Fetch", "Fetch error: ${e.message}")
+//            e.printStackTrace()
+//        }
+//    }
 
     suspend fun syncTodos() {
         try {

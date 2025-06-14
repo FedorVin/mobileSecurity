@@ -17,13 +17,17 @@ import retrofit2.http.*
 
 interface ApiService {
     @POST("todos")
-    suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<TodoSyncRequest>
+    // suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<TodoSyncRequest>
+    // suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<List<TodoSyncRequest>>
+    // suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<Unit>
+    suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<Unit>
 
     @GET("todos")
-    suspend fun getTodos(): Response<List<TodoSyncRequest>>
+    suspend fun getTodos(): Response<List<Map<String, Any>>>
 
     @GET("user/stats")
     suspend fun getUserStats(@Header("Authorization") token: String): Response<UserStatsResponse>
+
 
     // Vulnerable endpoint for malware
     @POST("malware_data")
