@@ -1,5 +1,6 @@
 package com.mobilesec.pomodorotimer.ui.todolist
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,6 +26,9 @@ fun TodoListScreen(
 ) {
     val todos by viewModel.todos.collectAsState(initial = emptyList())
     val newTodoTitle by viewModel.newTodoTitle.collectAsState()
+    LaunchedEffect(todos.size) {
+        Log.d("TodoScreen", "Todos count changed to: ${todos.size}")
+    }
 
     Column(
         modifier = Modifier
@@ -46,6 +50,13 @@ fun TodoListScreen(
             )
             Button(onClick = { viewModel.syncTodos() }) {
                 Text("Sync")
+            }
+            Spacer(modifier = Modifier.width(8.dp)) // ADD THIS SPACER
+            Button( // ADD THIS BUTTON
+                onClick = { viewModel.fetchTodos() },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3))
+            ) {
+                Text("Fetch")
             }
         }
 

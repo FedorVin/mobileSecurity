@@ -19,6 +19,13 @@ interface TodoDao {
 
     @Query("DELETE FROM todos WHERE id = :id")
     suspend fun deleteTodoById(id: Int)
+
+    @Query("DELETE FROM todos")
+    suspend fun deleteAllTodos()
+
+    @Insert
+    suspend fun insertAllTodos(todos: List<TodoEntity>)
+
 }
 
 @Dao

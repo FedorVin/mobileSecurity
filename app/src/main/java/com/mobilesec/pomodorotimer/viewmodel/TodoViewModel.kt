@@ -46,4 +46,10 @@ class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
             repository.syncTodos()
         }
     }
+    fun fetchTodos() {
+        viewModelScope.launch {
+            repository.fetchTodosFromServer()
+        }
+    }
+
 }

