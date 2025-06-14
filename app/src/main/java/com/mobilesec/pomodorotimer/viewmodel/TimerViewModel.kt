@@ -34,8 +34,19 @@ class TimerViewModel(
     private val _promoCode = MutableStateFlow("")
     val promoCode: StateFlow<String> = _promoCode
 
+    private val _completedSessions = MutableStateFlow(0)
+    val completedSessions: StateFlow<Int> = _completedSessions
+
     init {
         checkPremiumStatus()
+        loadCompletedSessions()
+    }
+
+    private fun loadCompletedSessions() {
+        viewModelScope.launch {
+            val count = repository.getWorkSessionsCount(0)
+            _completedSessions.value = count
+        }
     }
 
     fun startTimer() {
@@ -71,6 +82,10 @@ class TimerViewModel(
                 type = if (_isWorkSession.value) "work" else "break"
             )
             repository.insertTimerSession(session)
+
+            if (_isWorkSession.value) {
+                _completedSessions.value = repository.getWorkSessionsCount(0)
+            }
 
             _isWorkSession.value = !_isWorkSession.value
             resetTimer()

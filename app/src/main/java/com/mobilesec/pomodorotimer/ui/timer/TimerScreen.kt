@@ -22,6 +22,8 @@ fun TimerScreen(
     val isRunning by viewModel.isRunning.collectAsState()
     val isWorkSession by viewModel.isWorkSession.collectAsState()
     val isPremium by viewModel.isPremium.collectAsState()
+    val completedSessions by viewModel.completedSessions.collectAsState()
+
 
     Column(
         modifier = Modifier
@@ -62,6 +64,30 @@ fun TimerScreen(
         }
 
         Spacer(modifier = Modifier.height(48.dp))
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Number of completed sessions
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Completed Sessions: $completedSessions",
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp)) // Change from 48.dp to 32.dp
+
 
         // Control Buttons
         Row(
