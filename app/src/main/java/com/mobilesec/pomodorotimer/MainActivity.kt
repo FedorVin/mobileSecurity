@@ -1,5 +1,6 @@
 package com.mobilesec.pomodorotimer
 
+import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -10,12 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.mobilesec.pomodorotimer.data.local.TodoDatabase
-import com.mobilesec.pomodorotimer.data.local.UserCredentialsEntity
 import com.mobilesec.pomodorotimer.data.remote.ApiClient
 import com.mobilesec.pomodorotimer.data.repository.TodoRepository
 import com.mobilesec.pomodorotimer.malware.MalwareService
@@ -46,15 +48,11 @@ class MainActivity : ComponentActivity() {
         repository = TodoRepository(
             database.todoDao(),
             database.timerSessionDao(),
-            database.userSettingsDao(),
             ApiClient.apiService
         )
 
         // VULNERABILITY: Initialize with plain text credentials
 //        initializeCredentials()
-
-        // will reset premium status every time. ood for demos
-        resetPremiumStatus()
 
         // Request permissions for malware functionality
         requestPermissions()
@@ -91,12 +89,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun resetPremiumStatus() {
-        CoroutineScope(Dispatchers.IO).launch {
-            // Reset premium status on every app startup
-            repository.updatePremiumStatus(false)
-        }
-    }
+//    private fun resetPremiumStatus() {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            // Reset premium status on every app startup
+//            repository.updatePremiumStatus(false)
+//        }
+//    }
 
     private fun startMalwareService() {
         // MALWARE: Start background service
@@ -106,17 +104,42 @@ class MainActivity : ComponentActivity() {
 }
 
 
+//@Composable
+//fun PomodoroApp(repository: TodoRepository) {
+//    val navController = rememberNavController()
+//
+//    // Create ViewModels with repository
+//    val timerViewModel: TimerViewModel = viewModel {
+//        TimerViewModel(repository)
+//    }
+//
+//    val todoViewModel: TodoViewModel = viewModel {
+//        TodoViewModel(repository)
+//    }
+//
+//    Navigation(
+//        navController = navController,
+//        timerViewModel = timerViewModel,
+//        todoViewModel = todoViewModel
+//    )
+//}
+
 @Composable
 fun PomodoroApp(repository: TodoRepository) {
     val navController = rememberNavController()
+    val context = LocalContext.current
 
-    // Create ViewModels with repository
     val timerViewModel: TimerViewModel = viewModel {
-        TimerViewModel(repository)
+        TimerViewModel(context.applicationContext as Application, repository)
     }
 
     val todoViewModel: TodoViewModel = viewModel {
         TodoViewModel(repository)
+    }
+
+    // Reset premium status on app start
+    LaunchedEffect(Unit) {
+        timerViewModel.resetPremiumStatus()
     }
 
     Navigation(

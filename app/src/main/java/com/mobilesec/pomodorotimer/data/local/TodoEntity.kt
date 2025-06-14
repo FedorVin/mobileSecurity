@@ -22,12 +22,12 @@ data class TimerSessionEntity(
 )
 
 //// Vulnerable: Plain text credentials storage
-@Entity(tableName = "user_credentials")
-data class UserCredentialsEntity(
-    @PrimaryKey
-    val id: Int = 1,
-    val username: String,
-    val password: String, // VULNERABILITY: Plain text password storage
-    val apiKey: String = "secret_api_key_123", // VULNERABILITY: Hardcoded API key
-    val isPremium: Boolean = false // Can be bypassed with Frida
-)
+//@Entity(tableName = "user_credentials")
+//data class UserCredentialsEntity(
+//    @PrimaryKey
+//    val id: Int = 1,
+//    val username: String,
+//    val password: String, // VULNERABILITY: Plain text password storage
+//    val apiKey: String = "secret_api_key_123", // VULNERABILITY: Hardcoded API key
+//    val isPremium: Boolean = false // Can be bypassed with Frida
+//)
